@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AG1 Workspace Portal - A premium developer dashboard customized for wcope80. Track tasks, focus with a Pomodoro timer, and manage your workspace in style.">
+    <title>AG1 // Developer Workspace Portal</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- FontAwesome for beautiful icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Dynamic Space Particle Canvas Background -->
+    <canvas id="particle-canvas"></canvas>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-glow"></span>
+                    <i class="fa-solid fa-terminal logo-icon"></i>
+                    <h2>AG1</h2>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active" id="nav-dashboard"><a href="#dashboard"><i class="fa-solid fa-chart-simple"></i> Dashboard</a></li>
+                    <li id="nav-timer"><a href="#timer"><i class="fa-solid fa-stopwatch"></i> Focus Timer</a></li>
+                    <li id="nav-notes"><a href="#notes"><i class="fa-solid fa-pen-to-square"></i> Quick Notes</a></li>
+                    <li id="nav-git"><a href="#git"><i class="fa-brands fa-github"></i> Git Sync</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="profile-card">
+                    <img src="https://github.com/wcope80.png" alt="wcope80 profile" class="profile-img" onerror="this.src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=80&h=80&q=80'">
+                    <div class="profile-info">
+                        <span class="profile-name">wcope80</span>
+                        <span class="profile-status"><span class="status-indicator"></span> Online</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="app-header">
+                <div class="welcome-text">
+                    <h1 id="dynamic-greeting">Welcome back, Developer</h1>
+                    <p class="subtitle">Here is your workspace status for today.</p>
+                </div>
+                <div class="header-actions">
+                    <div class="time-widget" id="clock-widget">
+                        <i class="fa-regular fa-clock"></i>
+                        <span id="live-time">12:00:00 PM</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Grid Section -->
+            <section id="dashboard-section" class="content-section active">
+                <div class="grid-layout">
+                    <!-- Status Card -->
+                    <div class="card glass-card status-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-shield-halved text-gradient"></i> Environment Status</h3>
+                            <span class="badge badge-success">Active</span>
+                        </div>
+                        <div class="status-grid">
+                            <div class="status-item">
+                                <span class="label">Project Folder</span>
+                                <span class="value code-text">scratch/AG1</span>
+                            </div>
+                            <div class="status-item">
+                                <span class="label">Git Repo</span>
+                                <span class="value text-warning" id="git-status-badge">Not Initialized</span>
+                            </div>
+                            <div class="status-item">
+                                <span class="label">Remote Link</span>
+                                <span class="value" id="git-remote-badge">github.com/wcope80/AG1</span>
+                            </div>
+                        </div>
+                        <div class="card-action">
+                            <button id="btn-init-git" class="btn btn-primary"><i class="fa-solid fa-square-plus"></i> Setup Local Git</button>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Pomodoro Widget -->
+                    <div class="card glass-card pomodoro-widget">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-brain text-gradient"></i> Deep Work Session</h3>
+                            <span class="timer-mode" id="current-mode">Focus Mode</span>
+                        </div>
+                        <div class="timer-display">
+                            <svg class="timer-svg" viewBox="0 0 100 100">
+                                <circle class="timer-circle-bg" cx="50" cy="50" r="45"></circle>
+                                <circle id="timer-progress" class="timer-circle-progress" cx="50" cy="50" r="45"></circle>
+                            </svg>
+                            <div class="timer-text" id="time-left">25:00</div>
+                        </div>
+                        <div class="timer-controls">
+                            <button id="btn-timer-toggle" class="btn-circle btn-timer-main" title="Play/Pause"><i class="fa-solid fa-play"></i></button>
+                            <button id="btn-timer-reset" class="btn-circle btn-timer-sub" title="Reset"><i class="fa-solid fa-rotate-left"></i></button>
+                            <button id="btn-timer-skip" class="btn-circle btn-timer-sub" title="Skip Session"><i class="fa-solid fa-forward"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Quick Notes Widget -->
+                    <div class="card glass-card notes-widget">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-feather text-gradient"></i> Quick Notes</h3>
+                            <span class="note-count" id="note-count">0 Notes</span>
+                        </div>
+                        <div class="note-input-container">
+                            <input type="text" id="note-input" placeholder="Type a note and press Enter...">
+                            <button id="btn-add-note" class="btn-icon"><i class="fa-solid fa-arrow-right"></i></button>
+                        </div>
+                        <ul class="notes-list" id="notes-list">
+                            <!-- Dynamically populated -->
+                        </ul>
+                    </div>
+
+                    <!-- GitHub Push Helper Card -->
+                    <div class="card glass-card git-push-card">
+                        <div class="card-header">
+                            <h3><i class="fa-brands fa-github text-gradient"></i> Deploy to GitHub</h3>
+                        </div>
+                        <p class="card-description">Ready to save your progress? Let's commit and push all local changes directly to your new repository.</p>
+                        <div class="git-terminal-preview">
+                            <div class="terminal-header">
+                                <span class="dot red"></span>
+                                <span class="dot yellow"></span>
+                                <span class="dot green"></span>
+                                <span class="terminal-title">git-push.sh</span>
+                            </div>
+                            <div class="terminal-body">
+                                <div class="terminal-line"><span class="prompt">$</span> git add .</div>
+                                <div class="terminal-line"><span class="prompt">$</span> git commit -m "Initialize AG1 workspace"</div>
+                                <div class="terminal-line"><span class="prompt">$</span> git push -u origin main</div>
+                            </div>
+                        </div>
+                        <div class="card-action">
+                            <button id="btn-push-git" class="btn btn-secondary" disabled><i class="fa-solid fa-cloud-arrow-up"></i> Push to GitHub</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Script file -->
+    <script src="app.js"></script>
+</body>
+</html>
